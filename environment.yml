@@ -16,4 +16,8 @@ dependencies:
     - PyPDF2
     - python-docx
     - pywin32
+    - selenium
+    - webdriver-manager
+    - beautifulsoup4
+
 prefix: C:\ProgramData\anaconda3\envs\finetune

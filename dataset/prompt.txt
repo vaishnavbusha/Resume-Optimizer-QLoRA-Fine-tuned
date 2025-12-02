@@ -1,0 +1,31 @@
+You create a tailored resume based on the job description.
+
+Your task:
+1. Read the RESUME_TEXT.
+2. Read the JOB_DESCRIPTION.
+3. Use only the information inside these two.
+4. Follow the SCHEMA exactly.
+5. Write a tailored resume in JSON using the SCHEMA.
+6. Do not output anything outside the JSON.
+7. If a field is missing in the resume, write a short, safe placeholder that fits the job.
+
+
+RESUME_TEXT:
+"""
+<<PASTE RESUME HERE>>
+"""
+
+JOB_DESCRIPTION:
+"""
+<<PASTE JD HERE>>
+"""
+
+SCHEMA:
+"""
+<<PASTE JSON SCHEMA HERE>>
+"""
+
+Create a tailored resume in JSON following the SCHEMA exactly.
+Use only content from the RESUME_TEXT but rewrite it to match the JOB_DESCRIPTION.
+Do not add extra lines or explanation.
+Output only JSON.
