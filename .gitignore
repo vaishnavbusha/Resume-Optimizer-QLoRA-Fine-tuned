@@ -9,3 +9,11 @@ dataset/resumes.csv
 dataset/others
 dataset/OLD
 gen-lang-client-0465995346-fd97340f8167.json
+qwen3-resume-lora/
+dataset/batch_requests/
+dataset/batch_results/
+generated_resume_20251203*.txt
+dataset/training/final_training_dataset.jsonl
+dataset/resume_dataset.parquet
+qwen3-resume-lora-single-gpu/checkpoint-384/
+
