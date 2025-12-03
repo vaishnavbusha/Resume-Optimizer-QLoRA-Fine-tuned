@@ -1,0 +1,93 @@
+{
+  "personal_information": {
+    "name": "Phani Setty",
+    "email": "settyphanigmailcom",
+    "phone": "214 9235723",
+    "location": "Springfield, IL",
+    "socials": []
+  },
+  "summary": "Entry-level stagehand with hands-on experience in theatrical operations, equipment handling, and stage maintenance. Proven ability to operate stage lighting, sound systems, rigging equipment, and maintain costumes and props. Strong physical stamina, safety compliance, and team collaboration skills with experience in high-pressure environments. Committed to following detailed instructions and maintaining a safe, efficient backstage environment.",
+  "experiences": [
+    {
+      "designation": "Extra Help Stagehand",
+      "companyName": "University of Illinois Springfield",
+      "location": "Springfield, IL",
+      "start_date": "2025-01-01",
+      "end_date": "Present",
+      "points": [
+        "Load and unload theatrical equipment into and out of vehicles as required, including stacking and unstacking",
+        "Move theatrical equipment into and out of venue storage areas",
+        "Operate mechanical systems such as pit-lifts, orchestra shell winches, chain motors, and personnel-lift devices",
+        "Hang, connect to the dimming system, and operate lighting instruments for general and specific uses",
+        "Install, remove, operate, and reconfigure stage curtains, portable flooring, scenery, props, and other theatrical items",
+        "Maintain, move, set up, and operate spotlights as required",
+        "Maintain and operate lighting and audio control systems",
+        "Setup, maintain (including laundry), repair, and place back into storage costumes, wigs, and other performer items",
+        "Assist performers with putting on and taking off costume items",
+        "Sweep and mop stage areas as required for safety and audience presentation",
+        "Perform other duties commonly associated with stage operations"
+      ]
+    }
+  ],
+  "education": [],
+  "skills": [
+    {
+      "name": "Theatrical lighting operation",
+      "data": [
+        "Operate dimming systems and lighting instruments",
+        "Hang and connect lighting equipment to the dimming system"
+      ]
+    },
+    {
+      "name": "Sound system operation",
+      "data": [
+        "Operate audio gear including microphones, speakers, monitors, and control boards",
+        "Manage cable placement and audio system reconfiguration"
+      ]
+    },
+    {
+      "name": "Stage rigging",
+      "data": [
+        "Operate counterbalanced fly systems and winched cables",
+        "Maintain and repair tie lines, pick lines, and pin-rail equipment",
+        "Perform cable splicing and maintenance of rigging components"
+      ]
+    },
+    {
+      "name": "Costume maintenance",
+      "data": [
+        "Setup, maintain, repair, and store costumes, wigs, and associated fabric items",
+        "Assist performers with putting on and taking off costume items"
+      ]
+    },
+    {
+      "name": "Physical stamina",
+      "data": [
+        "Ability to lift and move heavy objects",
+        "Ability to climb stairs, ladders, and work at heights",
+        "Ability to work in dark, crowded, and noisy backstage environments"
+      ]
+    },
+    {
+      "name": "Safety compliance",
+      "data": [
+        "Follow employer safety rules and regulations",
+        "Conduct periodic inspections of curtains and equipment to prevent damage",
+        "Adhere to standard operating procedures and terminology"
+      ]
+    },
+    {
+      "name": "Team collaboration",
+      "data": [
+        "Work effectively in a team environment",
+        "Follow detailed or general directions from supervisors",
+        "Collaborate with performers, technicians, and crew members"
+      ]
+    }
+  ],
+  "projects": [],
+  "certifications": [],
+  "awards": [],
+  "extracurricular_achievements": [],
+  "languages": []
+}
