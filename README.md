@@ -312,6 +312,77 @@ if torch.cuda.is_available():
 
 ## 📈 Model Performance
 
+### 📊 Quality Evaluation Results
+
+The fine-tuned model was evaluated against multiple outputs using **GPT-5.1 Thinking LLM** 🔗<u>[Link](https://chatgpt.com/s/t_69309bb9c0a0819191373e1d9cbe86d9)</u> as an expert evaluator to assess quality improvements:
+
+| Output | Source | Score | Interpretation |
+|--------|--------|-------|----------------|
+| **Output 4** | Finetuned with good parameters + correct training pattern | ⭐ **9.5/10** | Best model. Fine-tuning succeeded. |
+| **Output 2** | Base model (no finetune) | ⭐ **9/10** | Strong baseline. |
+| **Output 1** | Finetuned on bad dataset | ⭐ **7/10** | Fine-tuning made it *worse* because data was flawed. |
+| **Output 3** | Old training data | ⭐ **2/10** | Very harmful training data; must never be used. |
+
+### Detailed Output Analysis (GPT-5.1 Evaluation)
+
+#### 🟩 Output 4 — Best (Score: 9.5/10)
+**Verdict: The cleanest, safest, and most schema-consistent version**
+- ✅ Uses strictly valid JSON
+- ✅ No hallucinations
+- ✅ Highly aligned to job description
+- ✅ Strong action verbs
+- ✅ Covers all major responsibilities
+- ✅ Clean, consistent skill blocks
+
+#### 🟩 Output 2 — Strong Baseline (Score: 9/10)
+**Verdict: Excellent — Good reference standard**
+- ✅ Highly aligned to job description
+- ✅ JSON is valid
+- ✅ No hallucinations
+- ▢ Slightly more verbose than Output 4
+
+#### 🟨 Output 1 — Decent (Score: 7/10)
+**Verdict: Acceptable but can be improved**
+- ✅ Valid JSON
+- ✅ Tailored to job description
+- ✅ No hallucinations
+- ▢ Less comprehensive than Output 2 & 4
+- ▢ Slightly generic phrasing
+
+#### 🟥 Output 3 — Very Poor (Score: 2/10)
+**Verdict: Harmful for finetuning — Should NEVER be used**
+- ❌ Not valid JSON (illegal commas, structural breaks)
+- ❌ Violates schema in multiple places
+- ❌ Completely ignores prompt instructions
+- ❌ Hallucinates companies, jobs, degrees, certifications
+- ❌ Random and inconsistent placeholder styles
+
+### Key Findings
+
+**What makes a good training sample:**
+- ✅ Valid JSON with strict schema adherence
+- ✅ No hallucinations or invented data
+- ✅ Closely aligned to job description
+- ✅ Strong action verbs in experience descriptions
+- ✅ Clean, consistent skill blocks
+- ✅ Professional summary tone
+
+**What to avoid in training data:**
+- ❌ Invalid JSON (illegal commas, structural breaks)
+- ❌ Schema violations
+- ❌ Hallucinated companies, jobs, degrees, or certifications
+- ❌ Ignoring prompt instructions
+- ❌ Inconsistent placeholder styles
+- ❌ Over-verbose or under-detailed descriptions
+
+### Evaluation Criteria
+
+1. **Schema Consistency** - Valid JSON, no hallucinations, proper structure
+2. **Tailoring Strength** - Alignment with job description responsibilities
+3. **Experience Quality** - Correct action verbs, within scope, no invented tasks
+4. **Skill Block Quality** - Job-relevant, consistent structure, no fluff
+5. **Summary Quality** - Crisp, accurate, professionally toned
+
 ### Key Metrics
 
 - **Average Generation Time**: ~3-5 seconds per resume (on RTX 3090)
@@ -323,7 +394,8 @@ if torch.cuda.is_available():
 1. Use `temperature=0.0` and `do_sample=False` for consistent JSON output
 2. Use `merge_and_unload()` for faster, more stable inference
 3. Ensure the prompt follows the exact training format with RESUME_TEXT, JOB_DESCRIPTION, and SCHEMA sections
-```
+4. Use high-quality training data that follows schema strictly
+5. Avoid training samples with hallucinations or schema violations
 
 ## 🐛 Troubleshooting
 
