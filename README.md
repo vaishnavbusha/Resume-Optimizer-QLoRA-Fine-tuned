@@ -1,191 +1,274 @@
-# Resume Optimizer - QLoRA Fine-tuned Qwen3-4B-Instruct
+# 🎯 Resume Optimizer - QLoRA Fine-tuned Qwen3-4B
 
-A fine-tuned language model for generating tailored resumes based on job descriptions. This project uses QLoRA (Quantized Low-Rank Adaptation) to efficiently fine-tune the Qwen3-4B-Instruct model for resume optimization and JSON structured output.
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
+[![Hugging Face](https://img.shields.io/badge/🤗-Transformers-yellow.svg)](https://huggingface.co/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-## 📋 Overview
+> **An end-to-end pipeline for building a resume optimization system using QLoRA fine-tuning on Qwen3-4B-Instruct.**
 
-This project fine-tunes a 4B parameter language model to:
-- **Tailor resumes** to match specific job descriptions
-- **Generate structured JSON** output following a predefined schema
-- **Extract and reorganize** resume content for optimal job matching
+---
 
-The model is trained using QLoRA with 4-bit quantization, enabling efficient fine-tuning on consumer GPUs (tested on NVIDIA RTX 3090 with 24GB VRAM).
+## 📋 Table of Contents
+
+- [Overview](#-overview)
+- [Features](#-features)
+- [Project Structure](#-project-structure)
+- [Installation](#-installation)
+- [Pipeline Workflow](#-pipeline-workflow)
+- [Dataset Format](#-dataset-format)
+- [Training](#-training)
+- [Inference](#-inference)
+- [Model Performance](#-model-performance)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+---
+
+## 🔍 Overview
+
+This project demonstrates a complete pipeline for building a **resume optimization system** that:
+
+| Step | Description |
+|------|-------------|
+| 📄 **Extract** | Parse text from 1800+ resumes (PDF, DOCX, DOC) |
+| 🔍 **Scrape** | Collect job descriptions from job posting websites |
+| 🤖 **Generate** | Create tailored resumes using LLMs (Ollama + Gemini) |
+| 🎯 **Fine-tune** | Train Qwen3-4B with QLoRA for optimized JSON output |
+| 🚀 **Deploy** | Run inference with the fine-tuned model |
+
+The model uses **QLoRA** (Quantized Low-Rank Adaptation) with 4-bit quantization, enabling efficient fine-tuning on consumer GPUs (tested on **NVIDIA RTX 3090** with 24GB VRAM).
+
+---
 
 ## 🚀 Features
 
-- **QLoRA Training**: Memory-efficient 4-bit NF4 quantization with LoRA adapters
-- **Structured JSON Output**: Generates valid JSON following a comprehensive resume schema
-- **Chat Template Format**: Uses Qwen's native chat template for training and inference
-- **Flash Attention 2**: Optional support for faster inference on compatible GPUs
-- **Merge and Unload**: Faster inference with merged LoRA weights
+| Feature | Description |
+|---------|-------------|
+| 📦 **QLoRA Training** | Memory-efficient 4-bit NF4 quantization with LoRA adapters |
+| 📝 **Structured JSON** | Generates valid JSON following a comprehensive resume schema |
+| 💬 **Chat Template** | Uses Qwen's native chat template for training and inference |
+| ⚡ **Flash Attention 2** | Optional faster inference on compatible GPUs |
+| 🔗 **Merge & Unload** | Faster inference with merged LoRA weights |
+| ☁️ **Batch Processing** | Gemini Batch API support for large-scale processing |
+| 🏠 **Local Processing** | Ollama integration for privacy-focused generation |
+
+---
 
 ## 📁 Project Structure
 
 ```
 QLoRA-finetuning/
-├── final_project.ipynb                            # Main training/inference notebook
-├── dataset/
-│   ├── training/
-│   │   └── final_training_dataset.jsonl          # Training data
-│   ├── final_resume_dataset.jsonl                # Resume dataset
-│   └── batch_requests/                           # Batch processing files
-├── qwen3-resume-lora/                            # LoRA adapter weights (generated)
+│
+├── 📓 final_project.ipynb              # Main notebook (11 sections)
+├── 📄 README.md                         # This file
+├── 📦 requirements.txt                  # Python dependencies
+├── 🐍 environment.yml                   # Conda environment
+│
+├── 📂 files/
+│   ├── dataset/
+│   │   ├── batch_requests/             # Gemini batch request files
+│   │   ├── batch_results/              # Batch processing results
+│   │   ├── extracted-resume-data/      # Raw extracted resume text
+│   │   ├── final-training-data/        # Cleaned training dataset
+│   │   └── resume-data-with-job-description/
+│   ├── job-scraper/                    # Scraped job data
+│   └── prompt/                         # Prompt templates
+│
+├── 🤖 qwen3-resume-lora-single-gpu/    # Fine-tuned LoRA adapter
 │   ├── adapter_config.json
 │   ├── adapter_model.safetensors
-│   └── tokenizer files...
-├── environment.yml                                # Conda environment
-└── README.md                                      # This file
+│   ├── tokenizer_config.json
+│   └── checkpoint-384/
+│
+└── 📊 results/
+    ├── basemodel/                      # Base model outputs
+    └── finetuned/                      # Fine-tuned model outputs
 ```
+
+---
 
 ## 🛠️ Installation
 
 ### Prerequisites
 
-- **Python**: 3.11+
-- **CUDA**: 11.8+ (for GPU acceleration)
-- **GPU**: NVIDIA GPU with 24GB+ VRAM recommended
-- **Conda**: For environment management
+| Requirement | Version | Notes |
+|-------------|---------|-------|
+| Python | 3.11+ | Required |
+| CUDA | 11.8+ | For GPU acceleration |
+| GPU VRAM | 24GB+ | Recommended (RTX 3090/4090) |
+| Conda | Latest | For environment management |
 
-### Setup Environment
+### Quick Setup
 
-1. **Clone the repository**
 ```bash
+# 1. Clone the repository
 git clone https://github.com/Abhinav1426/QLoRA-finetuning.git
 cd QLoRA-finetuning
-```
 
-2. **Create conda environment**
-```bash
+# 2. Create conda environment
 conda env create -f environment.yml
 conda activate finetune
+
+# 3. Verify GPU availability
+python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.cuda.get_device_name(0)}')"
 ```
 
-Or install dependencies manually:
+### Manual Installation
+
 ```bash
 conda create -n finetune python=3.11
 conda activate finetune
+
+# Core ML packages
 pip install torch transformers datasets accelerate trl peft bitsandbytes
+
+# Data processing
+pip install pandas numpy tqdm requests PyPDF2 python-docx pyarrow
+
+# Web scraping (optional)
+pip install selenium webdriver-manager beautifulsoup4 lxml
+
+# Google AI (optional)
+pip install google-genai
 ```
 
-3. **Verify GPU availability**
-```python
-import torch
-print(torch.cuda.is_available())  # Should return True
-print(torch.cuda.get_device_name(0))
+---
+
+## 🔄 Pipeline Workflow
+
+The notebook is organized into **11 sections**:
+
 ```
+┌─────────────────────────────────────────────────────────────────┐
+│  1. Setup          →  2. Resume Extraction  →  3. Job Scraping  │
+│         ↓                                                       │
+│  4. Data Cleaning  →  5. Ollama Generation  →  6. Gemini Batch  │
+│         ↓                                                       │
+│  7. Training Prep  →  8. Base Model Test    →  9. LoRA Training │
+│         ↓                                                       │
+│  10. Inference     →  11. Alternative Training                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+| # | Section | Description |
+|:-:|---------|-------------|
+| 1 | **Setup & Dependencies** | Install packages, import libraries |
+| 2 | **Dataset Creation** | Extract text from 1800+ resumes (PDF/DOCX/DOC) |
+| 3 | **Job Scraper** | Scrape job descriptions using Selenium |
+| 4 | **Data Cleaning** | Clean, filter, and combine resume-job pairs |
+| 5 | **Ollama Generator** | Generate tailored resumes locally |
+| 6 | **Gemini Batch API** | Large-scale processing via Google Cloud |
+| 7 | **Training Preparation** | Convert to chat format for fine-tuning |
+| 8 | **Base Model Testing** | Establish baseline performance |
+| 9 | **LoRA Fine-tuning** | Train with QLoRA technique |
+| 10 | **Inference** | Generate resumes with fine-tuned model |
+| 11 | **Alternative Training** | Stable single-GPU configuration |
+
+---
 
 ## 📊 Dataset Format
 
-The training dataset uses JSONL format with chat-style messages:
+### Training Data Structure
 
 ```json
 {
   "messages": [
-    {"role": "system", "content": "You create a tailored resume based on the job description..."},
-    {"role": "user", "content": "RESUME_TEXT:\n...\n\nJOB_DESCRIPTION:\n...\n\nSCHEMA:\n..."},
-    {"role": "assistant", "content": "{...JSON resume output...}"}
+    {
+      "role": "system",
+      "content": "You create a tailored resume based on the job description..."
+    },
+    {
+      "role": "user", 
+      "content": "RESUME_TEXT:\n\"\"\"...\"\"\"\n\nJOB_DESCRIPTION:\n\"\"\"...\"\"\"\n\nSCHEMA:\n\"\"\"...\"\"\""
+    },
+    {
+      "role": "assistant",
+      "content": "{...structured JSON resume...}"
+    }
   ]
 }
 ```
 
 ### Output Schema
 
-The model generates JSON following this schema structure:
-- `personal_information`: name, email, phone, location, socials
-- `summary`: Professional summary tailored to the job
-- `experiences`: Work experience with designations, companies, dates, and bullet points
-- `education`: Degrees, institutions, locations, dates, GPA
-- `skills`: Categorized skills relevant to the job
-- `projects`: Project details with technologies used
-- `certifications`: Professional certifications
-- `awards`: Awards and recognitions
-- `extracurricular_achievements`: Additional achievements
-- `languages`: Language proficiencies
+| Field | Type | Description |
+|-------|------|-------------|
+| `personal_information` | object | Name, email, phone, location, socials |
+| `summary` | string | Professional summary tailored to job |
+| `experiences` | array | Work history with bullet points |
+| `education` | array | Degrees, institutions, GPA |
+| `skills` | array | Categorized skills |
+| `projects` | array | Project details with technologies |
+| `certifications` | array | Professional certifications |
+| `awards` | array | Awards and recognitions |
+| `extracurricular_achievements` | array | Additional achievements |
+| `languages` | array | Language proficiencies |
+
+---
 
 ## 🎯 Training
 
-### Quick Start
-
-1. **Prepare your dataset** in the required JSONL format
-2. **Run the training cell** in the notebook:
+### Configuration Summary
 
 ```python
-#!/usr/bin/env python
-"""
-Single-GPU QLoRA fine-tuning for Qwen3-4B-Instruct on resume->JSON data.
-"""
+# Model
+MODEL = "Qwen/Qwen3-4B-Instruct-2507"
 
-import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+# Quantization (4-bit QLoRA)
+load_in_4bit = True
+bnb_4bit_quant_type = "nf4"
+bnb_4bit_compute_dtype = torch.float16
+bnb_4bit_use_double_quant = True
 
-import torch
-from datasets import load_dataset
-from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    BitsAndBytesConfig,
-    DataCollatorForLanguageModeling,
-)
-from peft import LoraConfig, prepare_model_for_kbit_training
-from trl import SFTConfig, SFTTrainer
+# LoRA
+r = 16                    # Rank
+lora_alpha = 32           # Scaling factor
+lora_dropout = 0.05
+target_modules = ["q_proj", "k_proj", "v_proj", "o_proj"]
 
-MODEL_NAME = "Qwen/Qwen3-4B-Instruct-2507"
-DATA_PATH = "./train_clean.jsonl"
-OUTPUT_DIR = "./qwen3-resume-lora-single-gpu"
-MAX_SEQ_LENGTH = 4096
-
-# Training configuration
-trainer.train()
-trainer.save_model(OUTPUT_DIR)
-```
-
-### Training Configuration
-
-```python
-Model: Qwen/Qwen3-4B-Instruct-2507
-Quantization: 4-bit NF4 with double quantization
-Compute dtype: float16
-
-LoRA Config:
-  - Rank (r): 16
-  - Alpha: 32
-  - Dropout: 0.05
-  - Bias: none
-  - Task type: CAUSAL_LM
-  - Target modules: q_proj, k_proj, v_proj, o_proj
-
-Training Parameters:
-  - Batch size: 1 (per device)
-  - Gradient accumulation: 8 steps
-  - Effective batch size: 8
-  - Learning rate: 2e-4
-  - Epochs: 2
-  - Max sequence length: 4096 tokens
-  - FP16: Enabled
-  - Warmup steps: 50
-  - Logging steps: 20
-  - Save steps: 500
+# Training
+num_train_epochs = 2
+per_device_train_batch_size = 1
+gradient_accumulation_steps = 8   # Effective batch = 8
+learning_rate = 2e-4
+max_seq_length = 4096
+fp16 = True
 ```
 
 ### Memory Requirements
 
-- **Model loading**: ~4-5 GB VRAM (4-bit quantized)
-- **Training peak**: ~18-22 GB VRAM
-- **Inference**: ~4-5 GB VRAM
+| Stage | VRAM Usage |
+|-------|------------|
+| Model Loading | ~4-5 GB |
+| Training Peak | ~18-22 GB |
+| Inference | ~4-5 GB |
 
-## 🔍 Usage
+### Run Training
 
-### Inference with LoRA Adapter
+```python
+# In the notebook (Section 9):
+trainer.train()
+trainer.save_model("./qwen3-resume-lora-single-gpu")
+tokenizer.save_pretrained("./qwen3-resume-lora-single-gpu")
+```
+
+---
+
+## 🔍 Inference
+
+### Quick Start
 
 ```python
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from peft import PeftModel
-import importlib.util
 
 MODEL_NAME = "Qwen/Qwen3-4B-Instruct-2507"
 LORA_PATH = "./qwen3-resume-lora-single-gpu"
 
+# Load with quantization
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_quant_type="nf4",
@@ -193,57 +276,39 @@ bnb_config = BitsAndBytesConfig(
     bnb_4bit_use_double_quant=True,
 )
 
-# Check if flash_attn is available
-flash_attn_available = importlib.util.find_spec("flash_attn") is not None
-use_flash_attn = flash_attn_available and torch.cuda.is_available() and torch.cuda.get_device_properties(0).major >= 8
-
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
     quantization_config=bnb_config,
     device_map="auto",
-    attn_implementation="flash_attention_2" if use_flash_attn else "eager",
-    torch_dtype=torch.bfloat16,
 )
 
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 tokenizer.pad_token = tokenizer.eos_token
 
-# Load LoRA adapter and merge for faster inference
+# Load and merge LoRA for faster inference
 model = PeftModel.from_pretrained(model, LORA_PATH)
 model = model.merge_and_unload()
 model.eval()
 
+# Generate function
 def generate(messages):
     prompt = tokenizer.apply_chat_template(
-        messages,
-        tokenize=False,
-        add_generation_prompt=True
+        messages, tokenize=False, add_generation_prompt=True
     )
-    
     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
     
     with torch.no_grad():
         out = model.generate(
             **inputs,
             max_new_tokens=2048,
-            temperature=0.0,      # Deterministic for JSON output
+            temperature=0.0,  # Deterministic for JSON
             do_sample=False,
-            pad_token_id=tokenizer.eos_token_id
         )
     
-    output_text = tokenizer.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True)
-    return output_text
-
-# Example usage
-messages = [
-    {"role": "system", "content": "You create a tailored resume based on the job description..."},
-    {"role": "user", "content": "RESUME_TEXT:\n...\n\nJOB_DESCRIPTION:\n...\n\nSCHEMA:\n..."},
-]
-
-output = generate(messages)
+    return tokenizer.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True)
 ```
 
-### Expected Output Format
+### Example Output
 
 ```json
 {
@@ -267,203 +332,105 @@ output = generate(messages)
       ]
     }
   ],
-  "education": [...],
   "skills": [
-    {
-      "name": "Programming Languages",
-      "data": ["Python", "JavaScript", "Go"]
-    }
-  ],
-  "projects": [...],
-  "certifications": [...],
-  "extracurricular_achievements": [...]
+    {"name": "Programming Languages", "data": ["Python", "JavaScript", "Go"]}
+  ]
 }
 ```
 
-## 🧹 Memory Management
-
-### Clean GPU Memory After Training
-
-```python
-import torch
-import gc
-
-# Delete model objects to free memory
-if 'trainer' in dir():
-    del trainer
-if 'model' in dir():
-    del model
-if 'base_model' in dir():
-    del base_model
-if 'inference_model' in dir():
-    del inference_model
-
-# Clear Python garbage collector
-gc.collect()
-
-# Clear CUDA cache
-if torch.cuda.is_available():
-    torch.cuda.empty_cache()
-    torch.cuda.synchronize()
-    
-    print(f"GPU Memory Allocated: {torch.cuda.memory_allocated() / 1024**3:.2f} GB")
-    print(f"GPU Memory Reserved: {torch.cuda.memory_reserved() / 1024**3:.2f} GB")
-```
+---
 
 ## 📈 Model Performance
 
-### 📊 Quality Evaluation Results
+### Evaluation Results (GPT-5.1 Thinking LLM)
 
-The fine-tuned model was evaluated against multiple outputs using **GPT-5.1 Thinking LLM** 🔗<u>[Link](https://chatgpt.com/s/t_69309bb9c0a0819191373e1d9cbe86d9)</u> as an expert evaluator to assess quality improvements:
+🔗 [Full Evaluation Link](https://chatgpt.com/s/t_69309bb9c0a0819191373e1d9cbe86d9)
 
-| Output | Source | Score | Interpretation |
-|--------|--------|-------|----------------|
-| **Output 4** | Finetuned with good parameters + correct training pattern | ⭐ **9.5/10** | Best model. Fine-tuning succeeded. |
-| **Output 2** | Base model (no finetune) | ⭐ **9/10** | Strong baseline. |
-| **Output 1** | Finetuned on bad dataset | ⭐ **7/10** | Fine-tuning made it *worse* because data was flawed. |
-| **Output 3** | Old training data | ⭐ **2/10** | Very harmful training data; must never be used. |
+| Output | Source | Score | Verdict |
+|--------|--------|:-----:|---------|
+| **Output 4** | Fine-tuned (best params) | ⭐ **9.5/10** | Best - schema consistent, no hallucinations |
+| **Output 2** | Base model | ⭐ **9/10** | Strong baseline |
+| **Output 1** | Fine-tuned (bad data) | ⭐ **7/10** | Data quality issues |
+| **Output 3** | Old training data | ⭐ **2/10** | Invalid JSON, hallucinations |
 
-### Detailed Output Analysis (GPT-5.1 Evaluation)
+### Quality Criteria
 
-#### 🟩 Output 4 — Best (Score: 9.5/10)
-**Verdict: The cleanest, safest, and most schema-consistent version**
-- ✅ Uses strictly valid JSON
-- ✅ No hallucinations
-- ✅ Highly aligned to job description
-- ✅ Strong action verbs
-- ✅ Covers all major responsibilities
-- ✅ Clean, consistent skill blocks
+| ✅ Good Training Data | ❌ Bad Training Data |
+|----------------------|---------------------|
+| Valid JSON structure | Invalid JSON syntax |
+| Schema adherence | Schema violations |
+| No hallucinations | Invented data |
+| Job-aligned content | Generic content |
+| Strong action verbs | Weak phrasing |
 
-#### 🟩 Output 2 — Strong Baseline (Score: 9/10)
-**Verdict: Excellent — Good reference standard**
-- ✅ Highly aligned to job description
-- ✅ JSON is valid
-- ✅ No hallucinations
-- ▢ Slightly more verbose than Output 4
+### Performance Stats
 
-#### 🟨 Output 1 — Decent (Score: 7/10)
-**Verdict: Acceptable but can be improved**
-- ✅ Valid JSON
-- ✅ Tailored to job description
-- ✅ No hallucinations
-- ▢ Less comprehensive than Output 2 & 4
-- ▢ Slightly generic phrasing
-
-#### 🟥 Output 3 — Very Poor (Score: 2/10)
-**Verdict: Harmful for finetuning — Should NEVER be used**
-- ❌ Not valid JSON (illegal commas, structural breaks)
-- ❌ Violates schema in multiple places
-- ❌ Completely ignores prompt instructions
-- ❌ Hallucinates companies, jobs, degrees, certifications
-- ❌ Random and inconsistent placeholder styles
-
-### Key Findings
-
-**What makes a good training sample:**
-- ✅ Valid JSON with strict schema adherence
-- ✅ No hallucinations or invented data
-- ✅ Closely aligned to job description
-- ✅ Strong action verbs in experience descriptions
-- ✅ Clean, consistent skill blocks
-- ✅ Professional summary tone
-
-**What to avoid in training data:**
-- ❌ Invalid JSON (illegal commas, structural breaks)
-- ❌ Schema violations
-- ❌ Hallucinated companies, jobs, degrees, or certifications
-- ❌ Ignoring prompt instructions
-- ❌ Inconsistent placeholder styles
-- ❌ Over-verbose or under-detailed descriptions
-
-### Evaluation Criteria
-
-1. **Schema Consistency** - Valid JSON, no hallucinations, proper structure
-2. **Tailoring Strength** - Alignment with job description responsibilities
-3. **Experience Quality** - Correct action verbs, within scope, no invented tasks
-4. **Skill Block Quality** - Job-relevant, consistent structure, no fluff
-5. **Summary Quality** - Crisp, accurate, professionally toned
-
-### Key Metrics
-
-- **Average Generation Time**: ~3-5 seconds per resume (on RTX 3090)
-- **Max Sequence Length**: 4096 tokens
-- **Output Format**: Deterministic JSON (temperature=0.0)
-
-### Tips for Best Results
-
-1. Use `temperature=0.0` and `do_sample=False` for consistent JSON output
-2. Use `merge_and_unload()` for faster, more stable inference
-3. Ensure the prompt follows the exact training format with RESUME_TEXT, JOB_DESCRIPTION, and SCHEMA sections
-4. Use high-quality training data that follows schema strictly
-5. Avoid training samples with hallucinations or schema violations
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**1. CUDA Out of Memory**
-```python
-# Solution: Reduce batch size or sequence length
-per_device_train_batch_size=1  # Already at minimum
-gradient_accumulation_steps=4   # Reduce from 8
-```
-
-**2. Flash Attention Not Available**
-```python
-# The code automatically falls back to "eager" attention
-# Or install flash-attn:
-pip install flash-attn --no-build-isolation
-```
-
-**3. JSON Parse Failures**
-```python
-# Solution: Ensure temperature=0.0 for deterministic output
-# Increase max_new_tokens if output is truncated
-```
-
-**4. LoRA Merge Issues with Quantized Models**
-```python
-# Note: merge_and_unload() works with 4-bit quantized models in newer versions
-# Ensure you have transformers>=4.35 and peft>=0.6
-```
-
-## 🤝 Contributing
-
-Contributions are welcome! Areas for improvement:
-
-- [ ] Support for longer context windows
-- [ ] Multi-language resume optimization
-- [ ] Fine-tuning on industry-specific datasets
-- [ ] Web interface for easy inference
-- [ ] Batch processing scripts
-- [ ] GGUF export for llama.cpp deployment
-
-## 📄 License
-
-This project is licensed under the MIT License. See LICENSE file for details.
-
-**Note**: The Qwen3-4B-Instruct base model has its own license terms. Please review the [Qwen license](https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507) before commercial use.
-
-## 🙏 Acknowledgments
-
-- **Qwen Team** for the excellent Qwen3-4B-Instruct base model
-- **Hugging Face** for transformers, PEFT, and TRL libraries
-- **Tim Dettmers** for bitsandbytes quantization
-
-## 📧 Contact
-
-- **Author**: Abhinav
-- **GitHub**: [@Abhinav1426](https://github.com/Abhinav1426)
-- **Repository**: [QLoRA-finetuning](https://github.com/Abhinav1426/QLoRA-finetuning)
-
-## 📚 References
-
-- [QLoRA Paper](https://arxiv.org/abs/2305.14314)
-- [LoRA: Low-Rank Adaptation](https://arxiv.org/abs/2106.09685)
-- [Qwen3 Model Card](https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507)
-- [TRL Library](https://huggingface.co/docs/trl)
-- [PEFT Library](https://huggingface.co/docs/peft)
+| Metric | Value |
+|--------|-------|
+| Generation Time | ~3-5 seconds (RTX 3090) |
+| Max Sequence Length | 4096 tokens |
+| Output Format | Deterministic JSON |
 
 ---
 
-**⭐ If you find this project helpful, please consider giving it a star!**
+## 🐛 Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| **CUDA OOM** | Reduce `gradient_accumulation_steps` to 4 |
+| **Flash Attention unavailable** | Falls back to "eager" automatically |
+| **JSON parse failures** | Use `temperature=0.0`, increase `max_new_tokens` |
+| **LoRA merge issues** | Update to `transformers>=4.35`, `peft>=0.6` |
+
+### Memory Cleanup
+
+```python
+import gc, torch
+del trainer, model
+gc.collect()
+torch.cuda.empty_cache()
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome! Ideas for improvement:
+
+- [ ] Longer context window support
+- [ ] Multi-language resume optimization
+- [ ] Industry-specific fine-tuning
+- [ ] Web interface
+- [ ] GGUF export for llama.cpp
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+> **Note:** The Qwen3 base model has its own [license terms](https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507).
+
+---
+
+## 🙏 Acknowledgments
+
+- **Qwen Team** - Qwen3-4B-Instruct base model
+- **Hugging Face** - Transformers, PEFT, TRL libraries
+- **Tim Dettmers** - bitsandbytes quantization
+
+---
+
+## 📚 References
+
+- [QLoRA Paper](https://arxiv.org/abs/2305.14314) - Efficient Fine-tuning of Quantized LLMs
+- [LoRA Paper](https://arxiv.org/abs/2106.09685) - Low-Rank Adaptation
+- [Qwen3 Model](https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507) - Base Model
+- [TRL Docs](https://huggingface.co/docs/trl) - Training Library
+- [PEFT Docs](https://huggingface.co/docs/peft) - Parameter-Efficient Fine-Tuning
+
+---
+
+<p align="center">
+  <b>⭐ If you find this project helpful, please give it a star!</b>
+</p>
