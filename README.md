@@ -269,49 +269,6 @@ tokenizer.save_pretrained("./qwen3-resume-lora-single-gpu")
 
 ---
 
-## 🌐 REST API
-
-The project includes a FastAPI-based REST API for easy integration.
-
-### Quick Start
-
-```bash
-# Install API dependencies
-pip install -r api_requirements.txt
-
-# Start the server
-python run_api.py
-```
-
-API will be available at `http://localhost:8000`
-
-### API Endpoints
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/health` | GET | Check model status |
-| `/schema` | GET | Get resume JSON schema |
-| `/optimize` | POST | Upload resume file + job description |
-| `/optimize/text` | POST | Submit resume text + job description |
-
-### Example Usage
-
-```bash
-# Upload resume file with job description
-curl -X POST "http://localhost:8000/optimize" \
-  -F "resume_file=@resume.pdf" \
-  -F "job_description=We are looking for a Senior Software Engineer..."
-
-# Or with job URL (auto-scraped)
-curl -X POST "http://localhost:8000/optimize" \
-  -F "resume_file=@resume.pdf" \
-  -F "job_url=https://linkedin.com/jobs/view/123456"
-```
-
-📖 **Full API Documentation:** See [`api/README.md`](api/README.md) or visit `/docs` when server is running.
-
----
-
 ## 🔍 Inference
 
 ### Quick Start
@@ -395,6 +352,50 @@ def generate(messages):
 ```
 
 ---
+
+## 🌐 REST API
+
+The project includes a FastAPI-based REST API for easy integration.
+
+### Quick Start
+
+```bash
+# Install API dependencies
+pip install -r api_requirements.txt
+
+# Start the server
+python run_api.py
+```
+
+API will be available at `http://localhost:8000`
+
+### API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/health` | GET | Check model status |
+| `/schema` | GET | Get resume JSON schema |
+| `/optimize` | POST | Upload resume file + job description |
+| `/optimize/text` | POST | Submit resume text + job description |
+
+### Example Usage
+
+```bash
+# Upload resume file with job description
+curl -X POST "http://localhost:8000/optimize" \
+  -F "resume_file=@resume.pdf" \
+  -F "job_description=We are looking for a Senior Software Engineer..."
+
+# Or with job URL (auto-scraped)
+curl -X POST "http://localhost:8000/optimize" \
+  -F "resume_file=@resume.pdf" \
+  -F "job_url=https://linkedin.com/jobs/view/123456"
+```
+
+📖 **Full API Documentation:** See [`api/README.md`](api/README.md) or visit `/docs` when server is running.
+
+---
+
 
 ## 📈 Model Performance
 

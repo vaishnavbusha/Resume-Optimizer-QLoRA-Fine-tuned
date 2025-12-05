@@ -11,11 +11,11 @@ pydantic>=2.0.0
 pydantic-settings>=2.0.0
 
 # ML/AI (same as main project)
-torch>=2.0.0
-transformers>=4.35.0
-peft>=0.6.0
-bitsandbytes>=0.41.0
-accelerate>=0.24.0
+torch
+transformers>=4.44
+peft
+bitsandbytes
+accelerate
 
 # Document parsing
 PyPDF2>=3.0.0
