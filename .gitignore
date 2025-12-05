@@ -15,6 +15,5 @@ dataset/batch_results/
 generated_resume_20251203*.txt
 dataset/training/final_training_dataset.jsonl
 dataset/resume_dataset.parquet
-qwen3-resume-lora-single-gpu/checkpoint-384/
 gen-lang-client-0465995346-fd97340f8167.json
 
