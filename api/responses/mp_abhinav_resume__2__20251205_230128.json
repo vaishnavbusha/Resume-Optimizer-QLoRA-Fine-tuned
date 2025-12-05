@@ -1,0 +1,181 @@
+{
+  "original_filename": "mp_abhinav_resume (2).pdf",
+  "uploaded_file_path": "api\\uploads\\mp_abhinav_resume__2__20251205_230011.pdf",
+  "generated_at": "2025-12-05T23:01:28.357923",
+  "tailored_resume": {
+    "personal_information": {
+      "name": "MALLARAPU PAVAN ABHINAV",
+      "email": "pempabhinav1426@gmail.com",
+      "phone": "+91-8919707712",
+      "location": "Alwal, Hyderabad, Telangana 500010",
+      "socials": [
+        {
+          "name": "linkedin",
+          "link": "https://www.linkedin.com/in/abhinav1426/"
+        }
+      ]
+    },
+    "summary": "Software Engineer with experience in full-stack development, microservices, and AI-driven solutions. Proven track record in building scalable applications using Java, Spring Boot, AWS, GCP, and AI/ML models. Expertise in data extraction, document parsing, and system optimization with a focus on performance and security.",
+    "experiences": [
+      {
+        "designation": "Software Engineer",
+        "companyName": "ADP",
+        "location": "Hyderabad, India",
+        "start_date": "June 2022",
+        "end_date": "Present",
+        "points": [
+          "Resolved security vulnerabilities and optimized performance for Smart Compliance Canada Application.",
+          "Designed and developed an asynchronous Java application gateway to manage traffic.",
+          "Developed key services such as Year-End Tax Filing, ROE, and Paygroup features for Smart Compliance Canada.",
+          "Managed full lifecycle upgrades of Spring Boot and JDK versions across multiple microservices, ensuring long-term maintainability and modern development standards.",
+          "Fixed critical bugs and optimized the performance of all the microservices of Smart Compliance Canada.",
+          "Reviewed architecture and resolved design flaws, playing a key role in improving code quality, scalability, and overall platform stability.",
+          "Improved the Core UI framework and optimized microservices.",
+          "Currently part of a team tackling implementation challenges for ADP, focusing on extracting data from unstructured formats like PDFs and images using advanced AI models. My work involves designing workflows to handle complex input formats, utilizing machine learning for document classification, and ensuring smooth integration with existing systems to optimize data processing and utilization.",
+          "Built GenAI-powered data extraction system for Project Manthan, cutting onboarding from 6 months to 15 days.",
+          "Contributed to LLM training for complex document parsing and data extraction."
+        ]
+      }
+    ],
+    "education": [
+      {
+        "institution": "GEETANJALI COLLEGE OF ENGINEERING AND TECHNOLOGY",
+        "degree": "B.tech in Computer Science Engineering",
+        "location": "Hyderabad, Telangana",
+        "start_date": "June 2018",
+        "end_date": "June 2022",
+        "gpa": "7.34/10"
+      },
+      {
+        "institution": "Narayana Junior College (ALWAL)",
+        "degree": "Bachelor's",
+        "location": "Hyderabad, Telangana",
+        "start_date": "August 2016",
+        "end_date": "May 2018",
+        "gpa": "71.7/100"
+      },
+      {
+        "institution": "BETHANY ACADEMY",
+        "degree": "CBSE",
+        "location": "Hyderabad, Telangana",
+        "start_date": "May 2016",
+        "end_date": "May 2016",
+        "gpa": "8.3/10"
+      }
+    ],
+    "skills": [
+      {
+        "name": "Java",
+        "data": [
+          "Spring Boot",
+          "Asynchronous Java",
+          "Java",
+          "ReactJs",
+          "Redux",
+          "NextJs",
+          "Django",
+          "FastAPI",
+          "Python",
+          "SQL",
+          "NoSQL",
+          "Postgres SQL",
+          "Mongo DB",
+          "Dynamo DB",
+          "AWS",
+          "GCP",
+          "Agentic workflow",
+          "LLM",
+          "MCP"
+        ]
+      },
+      {
+        "name": "Tools",
+        "data": [
+          "Jenkins",
+          "Kubernetes",
+          "Splunk",
+          "Docker",
+          "VS Code",
+          "MS Office",
+          "Jira",
+          "Bitbucket",
+          "Confluence",
+          "Git",
+          "Github"
+        ]
+      }
+    ],
+    "projects": [
+      {
+        "projectName": "Smart Home Automation",
+        "caption": "IOT based home automation system",
+        "location": "Hyderabad, India",
+        "start_date": "November 2021",
+        "end_date": "April 2022",
+        "projectDetails": [
+          "Developed and designed Smart Home Automation where we take existing appliances to online. It specifically focuses on the development of a user friendly IOT based home automation system that is able to control various components inside home via internet",
+          "Integration with Voice Assistants like Google Assistant, Alexa. Where u can control the home applications using the devices which support these voice assistants"
+        ],
+        "technologiesUsed": [
+          "Flutter",
+          "IoT",
+          "Assembly Language"
+        ],
+        "externalSources": []
+      },
+      {
+        "projectName": "Music Recommendation System",
+        "caption": "Emotion Recognition and Music Recommendation",
+        "location": "Hyderabad, India",
+        "start_date": "August 2021",
+        "end_date": "January 2022",
+        "projectDetails": [
+          "Developed an Emotion Recognition System using YOLO3 and TensorFlow where the model can recognise different types of emotions",
+          "Capturing the users emotions using OpenCV and sending it the model feed. This CNN model here predicts the emotions from the images and then recommends songs based on these predicted emotions",
+          "Based on these prediction user is then recommended songs on websites like YouTube, Spotify, Amazon Prime Music using their API’s"
+        ],
+        "technologiesUsed": [
+          "YOLO3",
+          "TensorFlow",
+          "OpenCV",
+          "Python",
+          "API Integration"
+        ],
+        "externalSources": []
+      }
+    ],
+    "certifications": [],
+    "awards": [],
+    "extracurricular_achievements": [
+      {
+        "name": "Event Manager",
+        "type": "Event Management",
+        "location": "Hyderabad, Telangana",
+        "date": "April 2021",
+        "description": "Event Manager of Bhaswara 2021"
+      },
+      {
+        "name": "Event Manager",
+        "type": "Event Management",
+        "location": "Hyderabad, Telangana",
+        "date": "April 2022",
+        "description": "Event Manager of Bhaswara 2022"
+      },
+      {
+        "name": "Winner",
+        "type": "Hackathon",
+        "location": "Hyderabad, Telangana",
+        "date": "November 2019",
+        "description": "Participated in HUMANOID ROBOT Hackathon"
+      },
+      {
+        "name": "Winner",
+        "type": "Hackathon",
+        "location": "Hyderabad, Telangana",
+        "date": "July 2022",
+        "description": "Participated in Jumpstart Hackathon ADP"
+      }
+    ],
+    "languages": []
+  }
+}

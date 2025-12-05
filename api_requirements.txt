@@ -1,0 +1,30 @@
+# Resume Optimizer API Dependencies
+# Install with: pip install -r api_requirements.txt
+
+# FastAPI and Server
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+python-multipart>=0.0.6
+
+# Pydantic for data validation
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# ML/AI (same as main project)
+torch>=2.0.0
+transformers>=4.35.0
+peft>=0.6.0
+bitsandbytes>=0.41.0
+accelerate>=0.24.0
+
+# Document parsing
+PyPDF2>=3.0.0
+python-docx>=0.8.11
+
+# Web scraping (optional - for job URL scraping)
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# Utilities
+python-dotenv>=1.0.0

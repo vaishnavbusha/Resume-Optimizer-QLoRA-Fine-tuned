@@ -19,6 +19,7 @@
 - [Dataset Format](#-dataset-format)
 - [Training](#-training)
 - [Inference](#-inference)
+- [Rest API for model inference](#-rest-api)
 - [Model Performance](#-model-performance)
 - [Troubleshooting](#-troubleshooting)
 - [Contributing](#-contributing)
@@ -53,6 +54,7 @@ The model uses **QLoRA** (Quantized Low-Rank Adaptation) with 4-bit quantization
 | 🔗 **Merge & Unload** | Faster inference with merged LoRA weights |
 | ☁️ **Batch Processing** | Gemini Batch API support for large-scale processing |
 | 🏠 **Local Processing** | Ollama integration for privacy-focused generation |
+| 🌐 **REST API** | FastAPI server for resume optimization via HTTP |
 
 ---
 
@@ -65,6 +67,17 @@ QLoRA-finetuning/
 ├── 📄 README.md                         # This file
 ├── 📦 requirements.txt                  # Python dependencies
 ├── 🐍 environment.yml                   # Conda environment
+├── 🚀 run_api.py                        # API server launcher
+├── 📦 api_requirements.txt              # API dependencies
+│
+├── 🌐 api/                              # FastAPI REST API
+│   ├── main.py                         # API endpoints
+│   ├── config.py                       # Settings & schema
+│   ├── schemas.py                      # Request/response models
+│   ├── model_service.py                # ML inference service
+│   ├── resume_parser.py                # PDF/DOCX parsing
+│   ├── job_scraper.py                  # Job URL scraping
+│   └── README.md                       # API documentation
 │
 ├── 📂 files/
 │   ├── dataset/
@@ -253,6 +266,49 @@ trainer.train()
 trainer.save_model("./qwen3-resume-lora-single-gpu")
 tokenizer.save_pretrained("./qwen3-resume-lora-single-gpu")
 ```
+
+---
+
+## 🌐 REST API
+
+The project includes a FastAPI-based REST API for easy integration.
+
+### Quick Start
+
+```bash
+# Install API dependencies
+pip install -r api_requirements.txt
+
+# Start the server
+python run_api.py
+```
+
+API will be available at `http://localhost:8000`
+
+### API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/health` | GET | Check model status |
+| `/schema` | GET | Get resume JSON schema |
+| `/optimize` | POST | Upload resume file + job description |
+| `/optimize/text` | POST | Submit resume text + job description |
+
+### Example Usage
+
+```bash
+# Upload resume file with job description
+curl -X POST "http://localhost:8000/optimize" \
+  -F "resume_file=@resume.pdf" \
+  -F "job_description=We are looking for a Senior Software Engineer..."
+
+# Or with job URL (auto-scraped)
+curl -X POST "http://localhost:8000/optimize" \
+  -F "resume_file=@resume.pdf" \
+  -F "job_url=https://linkedin.com/jobs/view/123456"
+```
+
+📖 **Full API Documentation:** See [`api/README.md`](api/README.md) or visit `/docs` when server is running.
 
 ---
 
