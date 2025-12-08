@@ -53,8 +53,8 @@ def main():
     print(f"🔄 Reload: {args.reload}")
     print(f"👷 Workers: {args.workers}")
     print("=" * 60)
-    print(f"📖 API Docs: http://localhost/:{args.port}/docs")
-    print(f"📖 ReDoc: http://localhost/:{args.port}/redoc")
+    print(f"📖 API Docs: http://localhost:{args.port}/docs")
+    print(f"📖 ReDoc: http://localhost:{args.port}/redoc")
     print("=" * 60)
     
     uvicorn.run(
